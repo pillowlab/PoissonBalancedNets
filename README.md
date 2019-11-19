@@ -8,7 +8,7 @@ MATLAB code to implement the balanced spiking networks (BSN) and generate figure
 ### BSN model scripts
 *  `local_framework.m`: implementation of the local Poisson BSN 
 *  `population_framework.m`: implementation of the populatoin Poisson BSN 
-*  `bsn.m`: implementation of the original BSN from [Boerlin et al.](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003258)
+*  `bsn.m`: implementation of the original BSN from [Boerlin et al.. 2013](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003258)
 
 ### Sample scripts
 *  `figure_X.m`: Scripts to generate figures 2, 4, 5, 6, 7 and 8 from Rullán & Pillow, 2019. (e.g., figure_2.m for fig. 2)
