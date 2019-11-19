@@ -1,5 +1,5 @@
 # PoissonBalancedNets
-Implementation of Balanced Spiking Networks with Poisson Neurons, from Rullán &amp; Pillow 2019. [Preprint here.](https://www.biorxiv.org/content/10.1101/836601v1l).
+Implementation of Balanced Spiking Networks with Poisson Neurons, from Rullán &amp; Pillow 2019. [Preprint here.](https://www.biorxiv.org/content/10.1101/836601v1l)
 
 =========================
 
