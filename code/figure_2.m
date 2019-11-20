@@ -26,7 +26,7 @@ params.wsig = 0; % weight variance
 params.nu = 10e-5; %linear cost orig 
 params.mu = 10e-6; %10e-4 %quadratic cost 
 params.sigv = 10e-4; %voltage noise
-params.tau_d = 1/10; % sp train decay time constant
+params.taud = 1/10; % sp train decay time constant
 params.tau_v = 1/20; % voltage decay time constant
 
 % Set spiking condition
