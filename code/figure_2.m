@@ -29,66 +29,62 @@ params.sigv = 10e-4; %voltage noise
 params.taud = 1/10; % sp train decay time constant
 params.tau_v = 1/20; % voltage decay time constant
 
+
+%% Run simulation with no restriction on # of neurons spiking per time bin
+
 % Set spiking condition
 % 0 = all above threshold fire
 % 1 = randomly select from neurons above thresh
 params.sp_cond = 0;
-%% Run simulation
-[ss, xh, xx] = bsn(stim,params);
 
-%% Plot results
-figure(1)
+fprintf('Running BSN simulation with no firing restriction...\n\n');
+[spks, xhat, xtrue] = bsn(stim,params);
+
 % Plot stimulus
-subplot(5, 2, 1)
-plot(t, stim,'linewidth', 2)
-box off
-set(gca, 'FontSize',15, 'linewidth',1)
-xlabel('Time (s)')
-ylabel('Stimulus intensity')
+clf; subplot(5, 2, 1);
+plot(t, stim,'linewidth', 2); 
+set(gca, 'FontSize',15, 'linewidth',1);
+ylabel('stimulus value');
+title('stimulus'); box off;
 
-% Raster plot 
-a = subplot(5, 2, [3 5])
-cla(a)
-[iiinh,jjinh] = find(ss(1:params.N/2,:)); % spikes of inhibitory
-[iiexc,jjexc] = find(ss(params.N/2+1:params.N,:)); % spikes of excitatory
+% Plot spike raster
+a = subplot(5, 2, [3 5]); cla(a);
+[iiinh,jjinh] = find(spks(1:params.N/2,:)); % spikes of inhibitory
+[iiexc,jjexc] = find(spks(params.N/2+1:params.N,:)); % spikes of excitatory
 plot(jjinh*params.dt,iiinh, '.', jjexc*params.dt,iiexc+params.N/2,'.');
-set(gca, 'ylim',[1 params.N]);
-box off
+set(gca, 'ylim',[1 params.N],'xlim', [0 tmax]); box off
 set(gca, 'FontSize',15, 'linewidth',1)
-ylabel('Neurons')
-title('All fire')
-%Read out and estimate
-a = subplot(5, 2, [7 9])
-cla(a)
-plot(t,xx, 'k','linewidth', 1.25)
-hold on
-plot(t,xh, '--','linewidth', 2);
+ylabel('neurons'); title('all neurons over threshold fire');
+
+% Plot true x and model reconstruction xhat
+a = subplot(5, 2, [7 9]); cla(a)
+plot(t,xtrue, 'k','linewidth', 1.25); hold on
+plot(t,xhat, '--','linewidth', 2);
 set(gca, 'ylim', [-10 20], 'xlim', [0 1.5], 'FontSize', 12)
-box off
-set(gca, 'FontSize',15, 'linewidth',1)
-ylabel('Read-out')
-%% Randomly select neuron to fire
+set(gca, 'FontSize',15, 'linewidth',1);
+ylabel('read-out'); xlabel('time (s)'); 
+hold off; box off;  drawnow;
+
+
+%% Now re-run with rule that at most 1 neuron to fire each time bin
+
+fprintf('Running BSN simulation with only 1 neuron spiking per time bin...\n\n');
 params.sp_cond = 1; % 0 let all fire, 1 random select firing, 2 max over T fires
-[ss, xh, xx] = bsn(stim,params);
+[spks, xhat, xtrue] = bsn(stim,params);
 
-%% Plot
-% Raster plot
-a = subplot(5, 2, [4 6])
-cla(a)
-[iiinh,jjinh] = find(ss(1:params.N/2,:)); % spikes of inhibitory
-[iiexc,jjexc] = find(ss(params.N/2+1:params.N,:)); % spikes of excitatory
+% Plot spike raster
+a = subplot(5, 2, [4 6]); cla(a);
+[iiinh,jjinh] = find(spks(1:params.N/2,:)); % spikes of inhibitory
+[iiexc,jjexc] = find(spks(params.N/2+1:params.N,:)); % spikes of excitatory
 plot(jjinh*params.dt,iiinh, '.', jjexc*params.dt,iiexc+params.N/2,'.');
-set(gca, 'ylim',[1 params.N]);
-box off
+set(gca, 'ylim',[1 params.N],'xlim', [0 tmax]); box off
 set(gca, 'FontSize',15, 'linewidth',1)
-title('Select one')
+title('max one neuron fires');
 
-%Read out and target
-a = subplot(5, 2, [8 10])
-cla(a)
-plot(t,xx, 'k','linewidth', 1.25)
-hold on
-plot(t,xh, '--','linewidth', 2);
+% Plot true x and model reconstruction xhat
+a = subplot(5, 2, [8 10]); cla(a)
+plot(t,xtrue, 'k','linewidth', 1.25); hold on
+plot(t,xhat, '--','linewidth', 2);
 set(gca, 'ylim', [-10 20], 'xlim', [0 1.5], 'FontSize', 12)
-box off
-set(gca, 'FontSize',15, 'linewidth',1)
+set(gca, 'FontSize',15, 'linewidth',1); box off; hold off;
+legend('target', 'model output');
